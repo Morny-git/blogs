@@ -1,0 +1,28 @@
+### JVM
+
+jvm内存模型包含：程序计数器、java虚拟机栈、本地方法栈、堆和方法区。
+
+![img](https://mmbiz.qpic.cn/mmbiz_png/PgqYrEEtEnoUSbbnzEiafyyQWUibOfnE3G1sZG1aJZSakhFe5d6QeiciaO9ZIDfHrFS9UZx8RfWfkPk9UZLCVdcriaQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+- **程序计数器**：每个线程都有一个程序计数器，线程私有的，相互独立。记录当前线程所执行的字节码的行号指示器
+
+- **java虚拟机栈**：线程私有。且与线程同生命周期。用于描述java方法执行的内存模型。栈帧存储局部变量表、操作栈、动态链接和方法出口等。方法的调用与完成也对应着入栈与出栈。在编译期间分配空间。
+
+  该区域规定了两种异常：如果线程请求的栈深度大于虚拟机所允许的深度，将抛出**StackOverflowError**异常；如果虚拟机栈可以动态扩展（当前大部分的Java虚拟机都可动态扩展，只不过Java虚拟机规范中也允许固定长度的虚拟机栈），当扩展时无法申请到足够的内存时会抛出**OutOfMemoryError**异常
+
+- **本地方法栈**：虚拟机栈为虚拟机执行Java方法（也就是字节码）服务，而本地方法栈则是为虚拟机使用到的Native方法服务
+
+- **堆**：线程共享。可以物理不连续，逻辑连续。几乎所有的对象实例都在这里分配内存。Java堆是垃圾收集器管理的主要区域，因此也被称为GC堆。现在收集器基本都是采用的分代收集算法，所以Java堆中还可以细分为：**新生代和老年代；再细致一点的有Eden空间、From Survivor空间、To Survivor空间等**，默认8:1:1。会出现OOM.通过-Xmx和-Xms扩展
+
+- **方法区**：线程共享。可以物理不连续，逻辑连续。存储**已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据**。很多人愿意把方法区称为“永久代”，本质上两者并不等价，只是使用永久代来实现方法区。这个区域的内存回收目标主要是针对常量池的回收和对类型的卸载，一般来说这个区域的回收“成绩”比较难以令人满意，尤其是类型的卸载，条件相当苛刻.也会出现OOM.
+
+### 调整内存大小：
+
+![img](https://mmbiz.qpic.cn/mmbiz_png/PgqYrEEtEnoUSbbnzEiafyyQWUibOfnE3GQ0NibDSK0gTV91vOLkOGUBM9h9nTHTJ9YfzVonOicI9c1N2cCpG4j5Mg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+## JMM
+
+![img](https://images2018.cnblogs.com/blog/897736/201805/897736-20180521112143877-1841147010.png)
+
+JMM定义了线程和主内存之间的抽象关系：线程之间的共享变量存储在主内存（Main Memory）中，每个线程都有一个私有的本地内存（Local Memory），本地内存中存储了该线程以读/写共享变量的副本。本地内存是JMM的一个抽象概念，并不真实存在。它涵盖了缓存、写缓冲区、寄存器以及其他的硬件和编译器优化。
+
