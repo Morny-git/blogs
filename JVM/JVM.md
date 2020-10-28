@@ -2,7 +2,7 @@
 
 jvm内存模型包含：程序计数器、java虚拟机栈、本地方法栈、堆和方法区。
 
-![img](https://mmbiz.qpic.cn/mmbiz_png/PgqYrEEtEnoUSbbnzEiafyyQWUibOfnE3G1sZG1aJZSakhFe5d6QeiciaO9ZIDfHrFS9UZx8RfWfkPk9UZLCVdcriaQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![classload](..\image\jvm\classload.png)
 
 - **程序计数器**：每个线程都有一个程序计数器，线程私有的，相互独立。记录当前线程所执行的字节码的行号指示器
 
@@ -18,11 +18,11 @@ jvm内存模型包含：程序计数器、java虚拟机栈、本地方法栈、�
 
 ### 调整内存大小：
 
-![img](https://mmbiz.qpic.cn/mmbiz_png/PgqYrEEtEnoUSbbnzEiafyyQWUibOfnE3GQ0NibDSK0gTV91vOLkOGUBM9h9nTHTJ9YfzVonOicI9c1N2cCpG4j5Mg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![img](..\image\jvm\heap.png)
 
 ## JMM
 
-![img](https://images2018.cnblogs.com/blog/897736/201805/897736-20180521112143877-1841147010.png)
+![img](..\image\jvm\jmm.png)
 
 JMM定义了线程和主内存之间的抽象关系：线程之间的共享变量存储在主内存（Main Memory）中，每个线程都有一个私有的本地内存（Local Memory），本地内存中存储了该线程以读/写共享变量的副本。本地内存是JMM的一个抽象概念，并不真实存在。它涵盖了缓存、写缓冲区、寄存器以及其他的硬件和编译器优化。
 
