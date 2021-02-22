@@ -1,9 +1,11 @@
 ##npm i docsify-cli -g
 docsify init ./docs
+
 docsify serve docs
 
 
 ##git
+cd docs
 git init
 git add .
 git commit -m "commit"
