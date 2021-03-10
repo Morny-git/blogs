@@ -1,6 +1,6 @@
 ### JVM
 
-jvm内存模型包含：程序计数器、java虚拟机栈、本地方法栈、堆和方法区。
+jvm包含：程序计数器、java虚拟机栈、本地方法栈、堆和方法区。
 
 ![classload](..\image\jvm\classload.png)
 

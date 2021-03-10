@@ -17,3 +17,6 @@ git remote add origin https://github.com/Morny-git/blogs.git
 git push -u origin master
 出现错误 failed to push som refs to…….，
 git pull origin master
+
+
+访问：https://morny-git.github.io/blogs/
