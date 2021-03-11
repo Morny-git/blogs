@@ -38,9 +38,59 @@ Set接口有两个实现类：HashSet(底层由HashMap实现)，LinkedHashSet
 以键值对的方式出现的 
 Map接口有三个实现类：HashMap，HashTable，LinkeHashMap 
 
-      HashMap非线程安全，高效，支持null；
+      HashMap非线程安全，高效，支持null；初始化16，扩容2n
 
-      HashTable线程安全，低效，不支持null 
+      HashTable线程安全，低效，不支持null 。初始化11.扩容2n+1
 
       SortedMap有一个实现类：TreeMap 
 ```
+
+关于数组与链表：
+
+- 数组：占用空间连续。寻址容易，查询速度快，但是，增加和删除效率低。
+- 链表：占用空间不连续。寻址困难，查询速度慢，但是，增加和删除效率高。
+- 数组+链表：综合，查询速度快，增删速度也快
+
+![image-20210311155330841](..\image\java\iterator.png)lsit
+
+### list
+
+ArrayList:空间连续，适合查询。允许重复和null.初始化10.扩容1.5倍。采用了Fail-Fast机制，面对并发的修改时，迭代器很快就会完全失败。
+
+> 原理参考：http://zhangshixi.iteye.com/blog/674856l
+> https://www.cnblogs.com/leesf456/p/5308358.html
+
+LinkedList:空间不连续，适合新增删除。允许重复和null
+
+> 原理参考：	.http://www.cnblogs.com/ITtangtang/p/3948610.htmll
+> https://www.cnblogs.com/leesf456/p/5308843.html
+
+vector :线程安全，已不使用。可用hashtable 代替
+
+### set
+
+hashset:value为空的hashmap
+
+> 参考：https://www.iteye.com/blog/zhangshixi-673143
+
+### map
+
+hashmap：数组+链表，链表长度超过一定长度转成红黑树。允许key-value为空。采用了Fail-Fast机制，通过一个modCount值记录修改次数，对HashMap内容的修改都将增加这个值。初始化16.扩容2n
+
+> 参考：http://zhangshixi.iteye.com/blog/672697
+>  参考：http://blog.csdn.net/lizhongkaide/article/details/50595719
+
+hashtable:数组+链表。不允许null.线程安全。synchronized是针对整张Hash表的，即每次锁住整张表让线程独占
+
+> 参考：http://blog.csdn.net/zheng0518/article/details/42199477
+
+ConcurrentHashMap：线程安全的hashmap.
+
+> http://blog.csdn.net/zheng0518/article/details/42199477
+
+
+
+
+
+
+
