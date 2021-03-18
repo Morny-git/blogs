@@ -133,7 +133,7 @@ Redis 集群有 16384 个哈希槽，每个 key 通过 CRC16 算法计算的结�
 
 #### redis 内存模型
 
-参考：https://www.jianshu.com/p/53eabcfd0437
+参考：https://www.cnblogs.com/kismetv/p/8654978.html
 
 #### redis线程模型
 
@@ -141,7 +141,7 @@ Redis 集群有 16384 个哈希槽，每个 key 通过 CRC16 算法计算的结�
 
 redis基于reactor模式开发了网络事件处理器，这个处理器叫做文件事件处理器，file event handler。这个文件事件处理器，是单线程的，redis才叫做单线程的模型，采用IO多路复用机制同时监听多个socket，根据socket上的事件来选择对应的事件处理器来处理这个事件
 
-文件事件处理器的结构包含4个部分：多个socket，IO多路复用程序，文件事件分派器，事件处理器（命令请求处理器、命令回复处理器、连接应答处理器，等等）
+redis单线程模型中最为核心的就是文件事件处理器。文件事件处理器的结构包含4个部分：多个socket，IO多路复用程序，socket队列，文件事件分派器，事件处理器（命令请求处理器、命令回复处理器、连接应答处理器，等等）
 
 ![img](..\image\redis\文件事件处理器.png)
 

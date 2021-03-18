@@ -35,9 +35,10 @@
 - [explain](mysql/explain.md)
 - [index](mysql/index.md)
 - [基本架构](mysql/基本架构.md)
-- [一致性](mysql/一致性.md)
+- [事务](mysql/事务.md)
 - [优化](mysql/优化.md)
 - [主从复制](mysql/主从复制.md)
+- [Q&A](mysql/Q&A.md)
 
 ### Redis
 
@@ -47,6 +48,7 @@
 - [缓存崩溃、击穿、穿透](redis/缓存崩溃、击穿、穿透.md)
 - [升级](redis/升级.md)
 - [Q&A](redis/Q&A.md)
+- [双写一致性](redis/双写一致性.md)
 
 ### Spring
 

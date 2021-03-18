@@ -19,21 +19,31 @@ idx_abc(a,b,c)索引，相当于创建了(a)、（a,b）（a,b,c）三个索引
 
 **覆盖索引**：为了减少回表造成的性能降低
 
+#### Innodb Myisam
 
+| MyISAM                                                       | InnoDB                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 不支持事务                                                   | 支持事务                                                     |
+| 锁粒度是表的                                                 | 锁粒度是行的                                                 |
+| 非聚集索引，叶子节点中存储的指针                             | 聚集索引，叶子节点中存储的数据                               |
+| 保存行数，select count(*)快                                  | select count(*)慢，需全表扫描                                |
+| 不支持外键                                                   | 支持外键                                                     |
+| 创建表后生成的文件有<br />frm:创建表的语句<br />MYD:表里面的数据文件（myisam data）<br />MYI:表里面的索引文件（myisam index） | 创建表后生成的文件有<br />frm:创建表的语句<br />idb:表里面的数据+索引文件 |
 
+#### B+插入数据
 
+1. Leaf Page有空间：直接插入
+2. Leaf Page无空间，Index Page有空间：插入index page中，然后调整leaf page
+3. Leaf Page无空间，Index Page无空间：创建index page，插入index page中后 调整index page与leaf
+4. Leaf Page无空间，但是兄弟Leaf Page有空间：调整index中的数据，使得该数据能插入到leaf
 
+图片见图片路径中
 
+#### B+数据删除
 
-
-
-
-
-
-
-
-
-表的索引存储在.MYI文件，数据存储在.MYD文件中
+1. Leaf Page大于50%，Index Page大于50%：直接删除
+2. Leaf Page小于50%，Index Page大于50%：删除数据后，合并leaf,对应的index 也调整
+3. Leaf Page小于50%，Index Page小于50%：删除数据，合并index,
 
 
 

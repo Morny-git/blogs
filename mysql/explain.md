@@ -1,12 +1,14 @@
 使用explain 显示执行计划
 
-![image-20201222151911467](..\..\docs\image\mysql\explain.png)
+![image-20201222151911467](..\image\mysql\explain.png)
 
 ### id
 
 id值越大优先级越高，越先执行。id相同，从上到下
 
 ### select_type
+
+表示查询中每个select子句的类型
 
 - SIMPLE `简单的select查询`，查询中`不包含子查询或者UNION`
 - PRIMARY 查询中若`包含任何复杂的`子部分，`最外层查询则被标记为PRIMARY`

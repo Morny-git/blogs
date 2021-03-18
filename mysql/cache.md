@@ -12,7 +12,7 @@
 
 innoDB 内存架构  内存+磁盘
 
-MySQL 会先改内存，然后记录 redo log，等有空了再刷磁盘，如果内存里没有数据，就去磁盘 load
+MySQL 会先改内存，然后记录 redo log，（redis 的aof 是先执行命令再写入内存，内存再写入aof）等有空了再刷磁盘，如果内存里没有数据，就去磁盘 load
 
 ### bufferpool
 
@@ -48,6 +48,8 @@ InnoDB访问一个Page时，首先会从Buffer Pool中获取，如果未找到�
 
 #### Double Write Buffer
 
+MySQL的buffer一页的大小是16K，文件系统一页的大小是4K，也就是说，MySQL将buffer中一页数据刷入磁盘，要写4个文件系统里的页
+
 ![img](..\image\mysql\DWB.png)
 
 如上图所示，当有页数据要刷盘时：
@@ -70,7 +72,7 @@ MySQL有很强的数据安全性机制：
 
 ### redo log 和 undo log
 
-undolog实现事务原子性，redolog实现事务的持久性
+undolog实现事务原子性,记录的是数据的逻辑变化，redolog实现事务的持久性,redo log也是基于页的格式来记录的
 
 避免数据写入时io瓶颈带来的性能问题，MySQL采用了这样一种缓存机制：当query修改数据库内数据时，InnoDB先将该数据从磁盘读取到内存中，修改内存中的数据拷贝，并将该修改行为持久化到磁盘上的事务日志（先写redo log buffer，再定期批量写入），而不是每次都直接将修改过的数据记录到硬盘内，等事务日志持久化完成之后，内存中的脏数据可以慢慢刷回磁盘，称之为Write-Ahead Logging。事务日志采用的是追加写入，顺序io会带来更好的性能优势。
 
