@@ -60,11 +60,13 @@
 ### Java
 
 - [AQS](java/AQS.md)
+- [collections](java/collections.md)
 - [hashmap](java/hashmap.md)
-- [list](java/list.md)
+- [thread](java/thread.md)
 - [单例模式](java/单例模式.md)
 - [基础](java/基础.md)
 - [网络](java/网络.md)
+- [注解](java/注解.md)
 
 ### kafka
 

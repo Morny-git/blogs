@@ -31,7 +31,7 @@ implements:多个线程共享一个对象
 
 
 
-##### synchronized的三种应用方式
+#### synchronized的三种应用方式
 
 1.作用于实例方法，当前实例加锁，进入同步代码前要获得当前实例的锁；
 
@@ -39,7 +39,7 @@ implements:多个线程共享一个对象
 
 3.作用于代码块，其中普通代码块 如Synchronized（obj） 这里的obj 可以为类中的一个属性、也可以是当前的对象，它的同步效果和修饰普通方法一样；Synchronized方法 （obj.class）静态代码块它的同步效果和修饰静态方法类似
 
-##### synchronized 的实现原理
+#### synchronized 的实现原理
 
 synchronized 代码块是通过 monitorenter 和 monitorexit 指令实现的。在一个线程退出同步块时，线程释放monitor对象，它的作用是把CPU缓存数据（本地缓存数据）刷新到主内存中，从而实现该线程的行为可以被其它线程看到。在其它线程进入到该代码块时，需要获得monitor对象，它在作用是使CPU缓存失效。synchronized 方法虽然在 vm 字节码层面并没有任何特别的指令来实现被 synchronized 修饰的方法，而是在 Class 文件的方法表中将该方法的 access_flags 字段中的 synchronized 标志位置1，表示该方法是同步方法。锁的实现有偏向锁、轻量级锁和重量级锁，其中偏向锁和轻量级锁是 JDK 针对锁的优化措施。在多线程的竞争下锁会升级，依次从偏向锁 -> 轻量级锁 -> 重量级锁，这里的锁只能升级但不能降级。在 Java 对象头中的 Mark Word 中存储了关于锁的标志位，其中：无锁和偏向锁为 00， 轻量级锁为 01，重量级锁为 10。
 
@@ -71,7 +71,7 @@ synchronized 代码块是通过 monitorenter 和 monitorexit 指令实现的。�
 
 将多个连续的加锁、解锁操作连接在一起，扩展成一个范围更大的锁，来减少频繁的加锁和释放锁带来的性能损耗。
 
-##### 线程池的实现原理
+#### 线程池的实现原理
 
 CachedThreadPool，FixedThreadPool，SingleThreadExecutor，ScheduleThreadPool，ScheduledThreadPoolExecutor。它们分别是通过 Executors 的静态方法创建出来的。而他们底层是通过 ThreadPoolExecutor 类创建出来的。创建线程池时会传入以下参数，他们分别是：
 
@@ -90,7 +90,20 @@ CachedThreadPool，FixedThreadPool，SingleThreadExecutor，ScheduleThreadPool�
    - ThreadPoolExecutor.DiscardOldestPolicy ： 抛弃队列最前面的任务，然后重新尝试执行任务。
    - ThreadPoolExecutor.DiscardPolicy，丢弃任务，不过也不抛出异常。
 
-##### 几种线程池的比较
+#### 线程池最大线程数如何确定
+
+-  对CPU密集型任务来说，要进行大量的计算，消耗CPU资源。要最高效地利用CPU，计算密集型任务同时进行的数量应当等于CPU的核心数。**线程数=CPU总核心数+1**  (+1是为了利用等待空闲)
+- 对IO密集型任务来说，大部分时间都消耗在等待IO操作完成。任务越多，CPU效率越高。**线程数=2*CPU总核心数+1**
+
+#### 并发环境下如何设置线程数
+
+- 高并发、任务执行时间短：线程池线程数可以设置为CPU核数+1，减少线程上下文的切换
+- 并发不高、任务执行时间长：
+  - IO密集型，可以增大线程数，让CPU更多的执行任务
+  - CPU密集型，也就是集中在计算上，可以设置少一些，减少上下文切换
+- 高并发，执行时间长：重点不在线程池上。
+
+#### 几种线程池的比较
 
 ##### CachedThreadPool
 
@@ -124,26 +137,26 @@ FixedThreadPool是一个典型且优秀的线程池，它具有线程池提高�
 
 创建一个定长的线程池，而且支持定时的以及周期性的任务执行，支持定时及周期性任务执行。
 
-##### 线程池任务的提交流程
+#### 线程池任务的提交流程
 
 1. 如果当前线程池线程数目小于 corePoolSize（核心池还没满呢），那么就创建一个新线程去处理任务。
 2. 如果核心池已经满了，来了一个新的任务后，会尝试将其添加到任务队列中，如果成功，则等待空闲线程将其从队列中取出并且执行，如果队列已经满了，则继续下一步。
 3. 此时，如果线程池线程数量 小于 maximumPoolSize，则创建一个新线程执行任务，否则，那就说明线程池到了最大饱和能力了，没办法再处理了，此时就按照拒绝策略来处理。（就是构造函数当中的 Handler 对象）。
 4. 如果线程池的线程数量大于 corePoolSize，则当某个线程的空闲时间超过了 keepAliveTime，那么这个线程就要被销毁了，直到线程池中线程数量不大于 corePoolSize 为止。
 
-##### 线程池的 shutdown 和 shutdownNow 方法的区别是什么
+#### 线程池的 shutdown 和 shutdownNow 方法的区别是什么
 
 1. shutdown 设置状态为 SHUTDOWN，而 shutdownNow 设置状态为 STOP
 2. shutdown 只中断空闲的线程，已提交的任务可以继续被执行，而 shutdownNow 中断所有线程
 3. shutdown 无返回值，shutdownNow 返回任务队列中还未执行的任务
 
-##### volatie
+#### volatie
 
 1.可见性：当线程要对这个变量执行的写操作，都不会写入本地缓存，而是直接刷入主内存中。当线程读取被 volatile 关键字修饰的变量时，也是直接从主内存中读取。（简单的说，一个线程修改的状态对另一个线程是可见的）。注意：volatile 不能保证原子性
 
 2.禁止指令重排：有volatile修饰的变量，赋值后多执行了一个 “load addl $0x0, (%esp)” 操作，这个操作相当于一个内存屏障，保证指令重排序时不会把后面的指令重排序到内存屏障之前的位置。
 
-##### as-if-serial 语义和 happens-before 规则
+#### as-if-serial 语义和 happens-before 规则
 
 as-if-serial ：不管怎么重排序，单线程程序的执行结果不能被改变
 
@@ -177,7 +190,7 @@ happens-before 规则:jvm会对代码进行编译优化，指令会出现重排�
 
 - 在构造函数内对一个final引用的对象的成员域的写入，与随后在构造函数外把这个被构造对象的引用赋值给一个引用变量，这两个操作之间不能重排序。
 
-##### 内存屏障
+#### 内存屏障
 
 内存屏障，是一种CPU指令，用于控制特定条件下的重排序和内存可见性问题。Java编译器也会根据内存屏障的规则禁止重排序。
 
@@ -189,17 +202,96 @@ LoadStore屏障：对于这样的语句Load1; LoadStore; Store2，在Store2及�
 
 StoreLoad屏障：对于这样的语句Store1; StoreLoad; Load2，在Load2及后续所有读取操作执行前，保证Store1的写入对所有处理器可见。它的开销是四种屏障中最大的。 在大多数处理器的实现中，这个屏障是个万能屏障，兼具其它三种内存屏障的功能。
 
-##### synchronization
+#### synchronization
 
 Synchronized 内部通过monitor保证线程的可见性。monitorexit时，缓存刷新到主内存。monitorenter 使得缓存失效。
 
-##### final
+#### final
 
 该关键字修饰的变量在构造函数中初始化，正确构造一个对象后，该字段对其他对象是可见的。
 
-##### volatile
+#### volatile
 
 主要用于线程之间的通信。保证写的内容刷新到主内存，读之前，cpu缓存失效，从主内存中读取。
 
+#### synchronized与lock区别
 
+|        | synchronized                                                 | lock                                                    |
+| ------ | ------------------------------------------------------------ | ------------------------------------------------------- |
+| 释放锁 | 线程执行完代码块；发生异常，jvm让线程释放                    | 线程执行完代码；发生异常不会主动，必须手动在finally释放 |
+| 锁状态 | 不可判断                                                     | 可判断                                                  |
+| 锁类型 | 可重入 不可中断 非公平                                       | 可重入 可/不可中断 可公平也可不公平                     |
+| 性能   | jdk5时，性能非常低效。jdk6做了优化，有适应自旋，锁消除，锁粗化，轻量级锁，偏向锁等等。性能不比lock差 | 竞争激烈时，性能更优越                                  |
+| 锁类型 | 悲观锁 独占锁                                                | 悲观锁                                                  |
+
+#### 虚假唤醒
+
+是一个表象，即在多处理器的系统下发出wait的程序有可能在没有notify唤醒的情形下苏醒继续执行。
+
+可通过代码避免
+
+```
+synchronized (obj) {
+     while (<condition does not hold>)
+         obj.wait();
+     ... // Perform action appropriate to condition
+ }
+```
+
+#### JUC
+
+https://www.jianshu.com/p/1f19835e05c0
+
+#### 死锁产生的四个必要条件
+
+- 互斥条件：独占性的使用资源。A获取到资源，B要获取时一直等待
+- 不可剥夺条件：获取的资源未使用前不能被其他进程剥夺
+- 请求和保持条件：进程每次申请它所需要的一部分资源，在申请新的资源的同时，继续占用已分配到的资源。
+- 循环等待条件：A等待B占有的资源。B等待A获取的资源
+
+> 也就是A有resA，B有resB,A在等B的resB,B在等A的resA.但是都不放手
+
+#### 处理死锁的方法
+
+- **预防死锁**：通过设置某些限制条件，去破坏产生死锁的四个必要条件中的一个或几个条件，来防止死锁的发生。
+- **避免死锁**：在资源的动态分配过程中，用某种方法去防止系统进入不安全状态，从而避免死锁的发生。
+- **检测死锁**：允许系统在运行过程中发生死锁，但可设置检测机构及时检测死锁的发生，并采取适当措施加以清除。
+- **解除死锁**：当检测出死锁后，便采取适当措施将进程从死锁状态中解脱出来
+
+#### 死锁
+
+```
+static Object res1 = "res1";
+	static Object res2 = "res2";
+	public static void main(String[] args) {
+		Thread threadA = new Thread(()->{try {
+			while (true){
+				synchronized (res1){
+					System.out.println("thread A get res1");
+					Thread.sleep(10);
+					synchronized (res2) {
+						System.out.println("thread A get res2");
+					}
+				}
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}});
+		Thread threadB = new Thread(()->{try {
+			while (true){
+				synchronized (res2){
+					System.out.println("thread B get res2");
+					Thread.sleep(10);
+					synchronized (res1) {
+						System.out.println("thread B get res1");
+					}
+				}
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}});
+		threadA.start();
+		threadB.start();
+	}
+```
 
