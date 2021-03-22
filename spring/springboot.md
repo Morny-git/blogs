@@ -5,6 +5,8 @@
 3. 自动配置类可能会再导入一些依赖（比如`@Import`），或者给出一些配置条件，并且会通过`@Bean`注解把该组件所包含的组件注入到spring容器中以供使用。
 4. 自动配置类还可能会绑定**xxxProperties**配置文件类，该类又会和应用程序中的`application.properties`中的指定前缀绑定。第3步注入组件的时候，组件可能还会获取配置文件类中的内容，所以用户可以在`application.properties`修改指定配置，来制定自己的个性化服务.如：server.port，而XxxxProperties类是通过@ConfigurationProperties注解与全局配置文件中对应的属性进行绑定的。
 
+详解：https://www.jianshu.com/p/88eafeb3f351
+
 #### 自己实现一个stater需要考虑哪些
 
 1. 创建Maven项目

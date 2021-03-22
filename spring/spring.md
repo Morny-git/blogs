@@ -1,11 +1,16 @@
 #### **IOC**
 
-控制反转也叫依赖注入，IOC利用java反射机制。所谓控制反转是指，本来被调用者的实例是有调用者来创建的，这样的缺点是耦合性太强，IOC则是统一交给spring来管理创建，将对象交给容器管理，你只需要在spring配置文件总配置相应的bean，以及设置相关的属性，让spring容器来生成类的实例对象以及管理对象。在spring容器启动的时候，spring会把你在配置文件中配置的bean都初始化好，然后在你需要调用的时候，就把它已经初始化好的那些bean分配给你需要调用这些bean的类。
+控制反转也叫依赖注入，IOC利用java反射机制。所谓控制反转是指，本来被调用者的实例是有调用者来创建的，这样的缺点是耦合性太强，IOC则是统一交给spring来管理创建，将对象交给容器管理，你只需要在spring配置文件总配置相应的bean，以及设置相关的属性，让spring容器来**生成类的实例对象以及管理对象**。在spring**容器启动的时候**，spring会把你在配置文件中配置的bean都**初始化**好，然后在你需要**调用**的时候，就把它已经初始化好的那些bean**分配给**你需要调用这些bean的类。
 
 #### **AOP**
 
 面向切面编程。（Aspect-Oriented Programming）
-AOP利用代理模式。AOP可以说是对OOP的补充和完善。OOP引入封装、继承和多态性等概念来建立一种对象层次结构，用以模拟公共行为的一个集合。实现AOP的技术，主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行；二是采用静态织入的方式，引入特定的语法创建“方面”，从而使得编译器可以在编译期间织入有关“方面”的代码，属于静态代理
+AOP利用代理模式。AOP可以说是对OOP的补充和完善。OOP引入封装、继承和多态性等概念来建立一种对象层次结构，用以模拟公共行为的一个集合。实现的关键是代理模式。
+
+AOP代理分为静态代理和动态代理。
+
+- 静态代理：AspectJ是静态代理，也称为编译时增强，AOP框架会在编译阶段生成AOP代理类，并将AspectJ(切面)织入到Java字节码中，运行的时候就是增强之后的AOP对象
+- 动态代理：Spring AOP使用的动态代理，所谓的动态代理就是说AOP框架不会去修改字节码，而是每次运行时在内存中临时为方法生成一个AOP对象，这个AOP对象包含了目标对象的全部方法，并且在特定的切点做了增强处理，并回调原对象的方法
 
 #### 注入注解
 
@@ -86,7 +91,11 @@ Spring容器中的bean可以分为5个范围：
 
 #### **Spring框架中的单例Beans是线程安全的么？**
 
-​    Spring框架并没有对单例bean进行任何多线程的封装处理。关于单例bean的线程安全和并发问题需要开发者自行去搞定。但实际上，大部分的Spring bean并没有可变的状态(比如Serview类和DAO类)，所以在某种程度上说Spring的单例bean是线程安全的。如果你的bean有多种状态的话（比如 View Model 对象），就需要自行保证线程安全。最浅显的解决办法就是将多态bean的作用域由“singleton”变更为“prototype”。
+​    Spring框架并没有对单例bean进行任何多线程的封装处理。关于单例bean的线程安全和并发问题需要开发者自行去搞定。但实际上，大部分的Spring bean并没有可变的状态(比如Serview类和DAO类)，所以在某种程度上说Spring的单例bean是线程安全的。如果你的bean有多种状态的话（比如 View Model 对象），就需要自行保证线程安全。最浅显的解决办法就是将多态bean的作用域由“singleton”变更为“prototype”。也可以使用threadLocal，为每个线程提供一个独立的变量副本，不同线程只操作自己线程的副本变量。
+
+> 有状态Bean(Stateful Bean) ：就是有实例变量的对象，可以保存数据，是非线程安全的。
+>
+> 无状态Bean(Stateless Bean)：就是没有实例变量的对象，不能保存数据，是不变类，是线程安全的。
 
 #### **Spring如何处理线程并发问题？**
 
@@ -195,17 +204,27 @@ Spring 提供了以下5种标准的事件：
 
 还可以通过扩展ApplicationEvent 类来开发自定义的事件
 
-> ```
-> public class CustomApplicationEvent extends ApplicationEvent{ public CustomApplicationEvent ( Object source, final String msg ){ super(source); System.out.println("Created a Custom event"); } }
-> ```
->
-> ```
-> public class CustomEventListener implements ApplicationListener < CustomApplicationEvent >{ @Override public void onApplicationEvent(CustomApplicationEvent applicationEvent) { //handle event } }
-> ```
->
-> ```
-> CustomApplicationEvent customEvent = new CustomApplicationEvent(applicationContext, "Test message"); applicationContext.publishEvent(customEvent);
-> ```
+```
+public class CustomApplicationEvent extends ApplicationEvent{ 
+	public CustomApplicationEvent ( Object source, final String msg ){
+		super(source);
+        System.out.println("Created a Custom event"); 
+    } 
+}
+```
+
+```
+public class CustomEventListener implements ApplicationListener <CustomApplicationEvent>{ 
+	@Override public void onApplicationEvent(CustomApplicationEvent applicationEvent) { 
+		//handle event 
+	} 
+}
+```
+
+```
+CustomApplicationEvent customEvent = new CustomApplicationEvent(applicationContext, "Test message"); 
+applicationContext.publishEvent(customEvent);
+```
 
 #### spring 自动装配 bean 有哪些方式？
 
@@ -222,6 +241,21 @@ Spring 提供了以下5种标准的事件：
 #### AOP中的名词
 
 ![img](..\image\spring\aop.png)
+
+可查看https://blog.csdn.net/a745233700/article/details/80959716下aop名词模块
+
+#### Advice类型
+
+- 环绕通知（Around Advice）：在Join point调用前后完成，可以自定义哪步执行
+
+- 前置通知（Before Advice）：在Join point之前执行。
+
+- 后置通知（After Advice）：正常/异常退出时执行。
+
+- 返回后通知（AfterReturning Advice）：正常返回执行
+
+- 抛出异常后通知（AfterThrowing advice）：抛出异常退出时执行
+
 
 #### `BeanFactory `&`ApplicationContext`
 
@@ -267,7 +301,7 @@ Spring 提供了以下5种标准的事件：
 
 二级缓存：如果没有被aop切片代理，存储半成品的bean,未填充属性；如果被代理，则存储代理的bean实例beanProxy,目标bean还是半成品
 
-三级缓存：存放的是ObjectFactory,传入的是一个匿名内部类，getObject()最终第哦啊雨哦给你的是getEarlyBeanRefrence().如果bean被代理，getEarlyBeanRefrence（）返回bean的代理对象，否则返回bean实例。
+三级缓存：存放的是ObjectFactory,传入的是一个匿名内部类，getObject()最终返回给你的是getEarlyBeanRefrence().如果bean被代理，getEarlyBeanRefrence（）返回bean的代理对象，否则返回bean实例。
 
 > getEarlyBeanReference（）主要逻辑大概描述下如果bean被AOP切面代理则返回的是beanProxy对象，且每次getEarlyBeanReference 都会产生一个新的代理对象。如果未被代理则返回的是原bean实例，这时我们会发现能够拿到bean实例(属性未填充)，然后从三级缓存移除，放到二级缓存earlySingletonObjects中去，后面去二级缓存中拿
 
@@ -282,6 +316,10 @@ Spring 提供了以下5种标准的事件：
 ​    （3）此时回到（1），此时拿到B，然后完善A，创建A成功。
 
 ​    （4）因为在（2）中拿到的是A的地址，所以在（3）中完善A在B中是一个
+
+#### 为什么必须三级缓存
+
+如果只解决循环依赖，二级就够了。但是如果使用了AOP代理，那么注入到其他bean的时候并不是最终的代理对象，而是原始的。这个时候就用到了三级缓存中的objectFactory 才能提前产生代理对象。
 
 #### BeanFactory&FactoryBean
 
@@ -306,7 +344,7 @@ Spring 提供了以下5种标准的事件：
 
 利用拦截器(拦截器必须实现InvocationHanlder)加上反射机制生成一个实现代理接口的匿名类，在调用具体方法前调用InvokeHandler来处理。只能对于实现了接口的类进行代理
 
-**CGLiB动态代理:**
+**CGLIB动态代理:**
 
 对代理对象类的class文件加载进来，通过修改其字节码生成子类来处理。依赖CGLIB库，必须实现 MethodInterceptor 。针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法，并覆盖其中方法实现增强，但是因为采用的是继承，所以该类或方法最好不要声明成final， 对于final类或方法，是无法继承的。
 
@@ -322,7 +360,7 @@ Spring 提供了以下5种标准的事件：
 
 > 参考https://www.cnblogs.com/yibutian/p/9634621.html
 
- 串spring
+####  串spring
 
 spring 最主要的是ioc和aop，ioc是控制反转，就是应用程序把创建对象实例的功能给了ioc容器，让ioc帮助创建，然后依赖注入。说到这就要说道ioc容器是怎么创建对象的了，在项目启动的初始化，根据配置文件，spring会先去查找@Requestmapping 和 @Controller 修饰的类，构造方法，属性，方法，别的也找（这是依赖查找），把这些都放到map中（这些都被变为信息类了），也就是container，然后依赖注入的时候，就去container中找，如果找到了，就创建，然后里面可能有@Autowired 修饰的全局变量，这个也是去查找，这是根据类型查找，说到这就要说道@Resource修饰的，这是javaee的，先根据名称查找，如果这不到在根据类型查找.
 
@@ -358,7 +396,7 @@ spring aop就是一个同心圆，要执行的方法为圆心，最外层的orde
 - 控制`ApplicationListener`实现类的加载顺序
 - 控制`CommandLineRunner`实现类的加载顺序
 
-bean 的生成先后顺序
+#### bean 的生成先后顺序
 
 直接或者间接标注在带有`@Component`注解的类上面;
 

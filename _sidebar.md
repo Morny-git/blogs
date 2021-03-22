@@ -73,6 +73,9 @@
 - [存储机制](kafka/存储机制.md)
 - [疑问](kafka/疑问.md) 
 
+### Nginx
+
+- [proxy](nginx/proxy.md)
   
 
   
