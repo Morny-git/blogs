@@ -23,7 +23,7 @@
 <setting name="localCacheScope" value="SESSION"/>
 ```
 
-xml文件 的<select>标签添加 flushCache="true", 禁用此查询的一级缓存
+xml文件 的  select  标签添加 flushCache="true", 禁用此查询的一级缓存
 
 #### 二级缓存配置
 

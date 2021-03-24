@@ -26,7 +26,7 @@
 - [es](es/es.md)
 - [es-search](es/es-search.md)
 - [reindex](es/reindex.md)
-- mybatis
+### Mybatis
 - [mybatis](mybatis/mybatis.md)
 
 ### MySQL

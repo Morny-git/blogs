@@ -28,7 +28,7 @@ AOP代理分为静态代理和动态代理。
 - 调用 Bean 的初始化方法(init-method)
 - 将 Bean 实 例 传 递 给 Bean 后 置 处 理 器 的 postProcessAfterInitialization 方法
 - Bean 可以使用了 
-- 当容器关闭时, 调用 Bean 的销毁方法(destroy-method)![img](D:\project\blog\docs\image\spring\bean.png)
+- 当容器关闭时, 调用 Bean 的销毁方法(destroy-method)![img](..\image\spring\bean.png)
 
 ##### **1. 实例化Bean**
 

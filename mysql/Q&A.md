@@ -74,6 +74,12 @@ RR下对读的行加锁，直到事务结束。但是当其他session 进行inse
 
 ​			事务B对user进行insert时，查看gap是否被锁住，锁住则无法insert.
 
+#### 在RC（读已提交）和RR（可重复度）级别下，MVCC都会生效，那么为什么RC不可以解决幻读，而RR可以解决幻读？
+
+innoDb有ReadView。readview中主要存有当前还活跃的事务m_ids.对于RR，事务开始时生成readview.对于RC,每次select 生成一个readview
+
+> https://blog.csdn.net/qq_35634181/article/details/113280233
+
 #### 事务并发问题
 
 - 脏读：事务A读取了事务B未提交的数据。
@@ -106,6 +112,10 @@ RR下对读的行加锁，直到事务结束。但是当其他session 进行inse
 解决方案：
 1.隔离级别设为可重复读(Repeatable Read),在该隔离级别下引入间隙锁。当Session 1执行delete语句时，会锁住间隙。那么，Ssession 2执行插入语句就会阻塞住。
 2.将binglog的格式修改为row格式，此时是基于行的复制，自然就不会出现sql执行顺序不一样的问题！奈何这个格式在mysql5.1版本开始才引入
+
+#### 为什么mysql事务隔离级别是rc的情况下主从同步不一致
+
+> https://blog.csdn.net/nanaranran/article/details/77719709
 
 #### 事务的ACID属性是如何实现的？
 

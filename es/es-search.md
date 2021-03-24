@@ -20,18 +20,29 @@
 	查看文档结构
 10.es的数据分为：精确值  和 全文
 11.使用analyze api 查看文本如何被分析。可指定分析器与分析的文本。
-	GET /_analyze
-	{
+
+```
+	GET	 /_analyze
+{
 	  "analyzer": "standard",
 	  "text": "Text to analyze"
 	}
-	查询gb索引，tweet类型的分词器工作情况
+```
+
+​	查询gb索引，tweet类型的分词器工作情况
+
+```
 	GET /gb/_analyze
 	{
 	  "field": "tweet",
 	  "text": "Black-cats" 
 	}
+```
+
 12.创建一个新索引，指定 tweet 域使用 english 分析器
+_
+
+```
 	PUT /gb 
 	{
 	  "mappings": {
@@ -54,7 +65,13 @@
 		}
 	  }
 	}
+```
+
+_
 13.使用 _mapping 在 tweet 映射增加一个新的名为 tag 的 not_analyzed 的文本域
+
+```
+
 	PUT /gb/_mapping/tweet
 	{
 	  "properties" : {
@@ -64,13 +81,21 @@
 		}
 	  }
 	}
+```
+
 14.排序：与query平级别.
+
+```
 	"sort": [
         { "date":   { "order": "desc" }},
         { "_score": { "order": "desc" }},
 		"dates": { "order": "asc",  "mode":  "min" }//多值字段的排序
     ]
+```
+
 15.should中的boost。增加语句的评分权重
+
+```
 	 "should": [
                 { "match": {
                     "content": {
@@ -91,14 +116,22 @@
     },
     "join_date": "2014/05/01"
 }
+```
+
 15.multi_match 查询可以在多个字段上执行相同的 match 查询
+
+```
 	{
 		"multi_match": {
 			"query":    "full text search",
 			"fields":   [ "title", "body" ]
 		}
 	}
+```
+
 16.查询特定兴趣爱好员工的平均年龄
+
+```
 {
     "aggs" : {
         "all_interests" : {
@@ -111,6 +144,8 @@
         }
     }
 }
+```
+
 17.filter过滤器不计算评分
 17.1 term过滤  = 
 17.2 terms过滤  in

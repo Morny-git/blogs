@@ -18,10 +18,10 @@
 
 布隆过滤器本质是一个巨大的bit数组（bit array）+几个不同的无偏hash函数。
 
-  布隆过滤器添加一个item("zxiaofan")，其操作步骤是：
+  布隆过滤器添加一个item("testbf")，其操作步骤是：
 
-- 使用多个无偏哈希函数对item进行hash运算，得到多个hash值hash(zxiaofan)；
-- 每个hash值对bit数组取模得到位数组中的位置index(zxiaofan)；
+- 使用多个无偏哈希函数对item进行hash运算，得到多个hash值hash(testbf)；
+- 每个hash值对bit数组取模得到位数组中的位置index(testbf)；
 - 判断所有index位是否都为1 ；
 - 位都为1则说明该元素可能已经存在了；
 - 任意一位不为1则说明一定不存在，此时会将不为1的位置为1；
