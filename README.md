@@ -29,3 +29,13 @@
 > git pull origin master
 >
 > 访问：https://morny-git.github.io/blogs/
+
+或者
+
+```console
+git fetch origin
+git add .
+git commit -m "commit"
+git push origin master
+
+```
