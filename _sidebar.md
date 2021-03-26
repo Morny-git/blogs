@@ -49,6 +49,7 @@
 - [升级](redis/升级.md)
 - [Q&A](redis/Q&A.md)
 - [双写一致性](redis/双写一致性.md)
+- [Aerospike](redis/Aerospike.md)
 
 ### Spring
 

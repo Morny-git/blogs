@@ -2,6 +2,8 @@
 
 ![image-20201222151911467](..\image\mysql\explain.png)
 
+![image-20210326161240968](..\image\mysql\explain2.png)
+
 ### id
 
 id值越大优先级越高，越先执行。id相同，从上到下
