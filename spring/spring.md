@@ -30,6 +30,8 @@ AOP代理分为静态代理和动态代理。
 - Bean 可以使用了 
 - 当容器关闭时, 调用 Bean 的销毁方法(destroy-method)![img](..\image\spring\bean.png)
 
+执行顺序：构造方法--setProperties---postConstuct--afterPropertiesSet---init
+
 ##### **1. 实例化Bean**
 
 对于BeanFactory容器，当客户向容器请求一个尚未初始化的bean时，或初始化bean的时候需要注入另一个尚未初始化的依赖时，容器就会调用createBean进行实例化。 
@@ -261,7 +263,7 @@ applicationContext.publishEvent(customEvent);
 
 `BeanFactory`：采用延迟加载的方式，只有根据id获取对象的时候，才真正创建对象。多例对象适用。
 
-`ApplicationContext`：采用立即加载的方式，只要一读取完配置文件，马上就创建配置文件中配置的对象。单例对象适用。 ApplicationContext接口，它由BeanFactory接口派生而来，因而提供BeanFactory所有的功能。ApplicationContext以一种更向面向框架的方式工作以及对上下文进行分层和实现继承，ApplicationContext包还提供了以下的功能：
+`ApplicationContext`：采用立即加载的方式，只要一读取完配置文件，马上就创建配置文件中配置的对象。单例对象适用。 ApplicationContext接口，它由BeanFactory接口**派生**而来，因而提供BeanFactory所有的功能。ApplicationContext以一种更向面向框架的方式工作以及对上下文进行分层和实现继承，ApplicationContext包还提供了以下的功能：
 
  • MessageSource, 提供国际化的消息访问
 
@@ -270,6 +272,8 @@ applicationContext.publishEvent(customEvent);
  • 事件传播 
 
  • AOP的功能
+
+ApplicationContext拥有BeanFactory的功能，并不是它自身去实现，而是由BeanFactory的实现类来实现（即，ApplicationContext使用组合来实现BeanFactory的功能）
 
 #### ApplicationContext的三个常用实现类
 
@@ -346,9 +350,11 @@ applicationContext.publishEvent(customEvent);
 
 **CGLIB动态代理:**
 
-对代理对象类的class文件加载进来，通过修改其字节码生成子类来处理。依赖CGLIB库，必须实现 MethodInterceptor 。针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法，并覆盖其中方法实现增强，但是因为采用的是继承，所以该类或方法最好不要声明成final， 对于final类或方法，是无法继承的。
+对代理对象类的class文件加载进来，运行时通过修改其字节码生成子类来处理。依赖CGLIB库，必须实现 MethodInterceptor 。针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法，并覆盖其中方法实现增强，但是因为采用的是继承，所以该类或方法最好不要声明成final， 对于final类或方法，是无法继承的。
 
 在jdk6、jdk7、jdk8逐步对JDK动态代理优化之后，在调用次数较少的情况下，JDK代理效率高于CGLIB代理效率，只有当进行大量调用的时候，jdk6和jdk7比CGLIB代理效率低一点，但是到jdk8的时候，jdk代理效率高于CGLIB代理。
+
+> https://blog.csdn.net/flyfeifei66/article/details/81481222
 
 **Spring如何选择用JDK还是CGLiB？**
 

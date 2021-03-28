@@ -89,3 +89,9 @@ buffer 每 refresh 一次，就会产生一个 `segment file` ，所以默认情
 　　对于读操作，可以设置replication为sync(默认)，这使得操作在主分片和副本分片都完成后才会返回；如果设置replication为async时，也可以通过设置搜索请求参数_preference为primary来查询主分片，确保文档是最新版本
 
 https://www.cnblogs.com/heqiyoujing/p/11146178.html
+
+
+
+#### 有哪些分词器，分词器如何分词
+
+有时间看看这个：https://stor.51cto.com/art/202003/612707.htm。es如何存储数据

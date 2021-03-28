@@ -7,6 +7,8 @@
 
 详解：https://www.jianshu.com/p/88eafeb3f351
 
+https://blog.csdn.net/weixin_46573158/article/details/114435314
+
 #### 自己实现一个stater需要考虑哪些
 
 1. 创建Maven项目
