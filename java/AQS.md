@@ -80,6 +80,8 @@ if (1.state == 0 && 2,currentThread == node.pre && 3.CAS(state,0,1)){
 }
 ```
 
+https://blog.csdn.net/sinat_32873711/article/details/106619980
+
 #### CountDownLatch
 
 初始化时用给定的数字。调用 countDown() 方法每次减1，在到达 0 之前，await 方法会一直受阻塞。
@@ -114,7 +116,7 @@ LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列。
 
 原理：阻塞队列实现阻塞同步的方式很简单，使用的就是是lock锁的多条件（condition）阻塞控制。使用BlockingQueue封装了根据条件阻塞线程的过程，而我们就不用关心繁琐的await/signal操作了。
 
-
+#### 如何使用aqs写出一个互斥锁
 
 
 

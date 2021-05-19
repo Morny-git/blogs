@@ -355,6 +355,8 @@ ApplicationContext拥有BeanFactory的功能，并不是它自身去实现，而
 在jdk6、jdk7、jdk8逐步对JDK动态代理优化之后，在调用次数较少的情况下，JDK代理效率高于CGLIB代理效率，只有当进行大量调用的时候，jdk6和jdk7比CGLIB代理效率低一点，但是到jdk8的时候，jdk代理效率高于CGLIB代理。
 
 > https://blog.csdn.net/flyfeifei66/article/details/81481222
+>
+> https://www.cnblogs.com/leifei/p/8263448.html
 
 **Spring如何选择用JDK还是CGLiB？**
 

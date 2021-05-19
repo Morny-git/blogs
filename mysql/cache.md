@@ -37,12 +37,12 @@ InnoDB访问一个Page时，首先会从Buffer Pool中获取，如果未找到�
 `Change Buffer`是用来缓存那些在`Buffer Pool`中没有的数据页中的二级缓存。`Insert`,`update`,`delete`等操作会触发缓存动作，并且在数据页缓存进`Buffer Pool`的时候，会将`Change Buffer`中的数据合并到`缓存的数据页`中
 
 - `Change Buffer`默认占用所有缓存的`25%`,最高调整到`50%`
-
 - 如果当前数据库中的二级索引较少，或者数据库是一个只读数据库，可以关闭`Change Buffer`
-
 - 相反如果有大量的`update`,`Delete`,`Insert`操作，可以加大`Change Buffer`
 
-  
+对于非唯一索引，有更新操作时，如果数据在内存中，直接更新。不在内存时，将操作先更新到change buffer 。只有访问数据时，执行merge(/后台定期merge/数据库关闭时merge)  。适合写多读少
+
+唯一索引因为是顺序读写 ，所以不需要change buffer.
 
 > 参考：https://blog.csdn.net/weixin_29491885/article/details/102957641
 
@@ -137,7 +137,7 @@ InnoDB有三种行锁的算法：
 
 #### checkpion机制
 
-**在innodb中，数据刷盘的规则只有一个：checkpoint。**但是触发checkpoint的情况却有几种。**不管怎样，****checkpoint****触发后，会将buffer****中脏数据页和脏日志页都刷到磁盘。**
+**在innodb中，数据刷盘的规则只有一个：checkpoint。**但是触发checkpoint的情况却有几种。不管怎样，checkpoint触发后，会将buffer中脏数据页和脏日志页都刷到磁盘。**
 
 innodb存储引擎中checkpoint分为两种：
 
